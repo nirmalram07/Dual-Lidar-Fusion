@@ -11,6 +11,7 @@ setup(
          ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/urdf', ['urdf/robot_model.xacro']),
+        ('share/' + package_name + '/stl', ['stl/caster_new_front_plane.stl', 'stl/robot_base_top_plane.stl', 'stl/lidar_front.stl']),
         ('share/' + package_name + '/launch', ['launch/urdf_model.launch.py']),
     ],
     install_requires=['setuptools'],
