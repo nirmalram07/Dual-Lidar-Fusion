@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+
+        <gazebo reference="front_lidar">
+            <sensor name="front_lidar" type="ray">
+                <pose> 0 0 0 0 0 0 </pose>
+                <visualize>true</visualize>
+                <update_rate>10</update_rate>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>360</samples>
+                            <min_angle>4.64</min_angle>
+                            <max_angle>8.74</max_angle>
+                        </horizontal>
+                    </scan>
+                    <range>
+                        <min>0.1</min>
+                        <max>12</max>
+                    </range>
+                </ray>
+                <plugin name="front_laser_controller" filename="libgazebo_ros_ray_sensor.so">
+                    <ros>
+                        <remapping>~/out:=scan1</remapping>
+                    </ros>
+                    <output_type>sensor_msgs/LaserScan</output_type>
+                    <frame_name>front_lidar</frame_name>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="back_lidar">
+            <sensor name="back_lidar" type="ray">
+                <pose> 0 0 0 0 0 0 </pose>
+                <visualize>true</visualize>
+                <update_rate>10</update_rate>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>360</samples>
+                            <min_angle>1.51</min_angle>
+                            <max_angle>5.59</max_angle>
+                        </horizontal>
+                    </scan>
+                    <range>
+                        <min>0.1</min>
+                        <max>12</max>
+                    </range>
+                </ray>
+                <plugin name="back_laser_controller1" filename="libgazebo_ros_ray_sensor.so">
+                    <ros>
+                        <remapping>~/out:=scan2</remapping>
+                    </ros>
+                    <output_type>sensor_msgs/LaserScan</output_type>
+                    <frame_name>back_lidar</frame_name>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+</robot>
