@@ -10,6 +10,7 @@
         "/home/nirmal/ros2_ws/install/action_serv/include/**",
         "/home/nirmal/turtlebot3_ws/install/turtlebot3_gazebo/include/**",
         "/home/nirmal/turtlebot3_ws/install/turtlebot3_fake_node/include/**",
+        "/home/nirmal/ros2_lidar/src/2d_lidar_fusion_demo/lidar_fusion/include/**",
         "/home/nirmal/thedush_bkend/thedush-backend/task_manager_ws/install/task_manager_msgs/include/**",
         "/home/nirmal/thedush_bkend/thedush-backend/task_manager_ws/install/onix_msgs/include/**",
         "/home/nirmal/thedush_bkend/thedush-backend/task_manager_ws/install/nav2_msgs/include/**",

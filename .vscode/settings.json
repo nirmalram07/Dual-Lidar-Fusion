@@ -30,5 +30,9 @@
         "/home/nirmal/thedush_bkend/thedush-backend/task_manager_ws/install/agv_srv/local/lib/python3.10/dist-packages",
         "/opt/ros/humble/lib/python3.10/site-packages",
         "/opt/ros/humble/local/lib/python3.10/dist-packages"
-    ]
+    ],
+    "cmake.sourceDirectory": "/home/nirmal/ros2_lidar/src/2d_lidar_fusion_demo/lidar_fusion",
+    "files.associations": {
+        "chrono": "cpp"
+    }
 }
