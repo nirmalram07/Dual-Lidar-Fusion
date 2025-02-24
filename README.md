@@ -1,4 +1,4 @@
-# Dual Lidar Fusion for Combined Laser Scans in Mobile Robots
+# Dual Lidar Fusion for Combined Laser Scans in Mobile Robot
 
 ## Overview
 This project demonstrates a dual lidar fusion system on a mobile robot. The robot features two lidar sensors—one mounted at the front left bottom and another at the back right bottom—integrated via a custom URDF in a single package. A separate package hosts an rclcpp node that:
@@ -31,7 +31,7 @@ Future plans include integrating this system with the ROS2 navigation stack for 
    cd lidar_fusion_ws
    mkdir src
    cd src
-   git clone https://github.com/nirmalram07/Warehouse-AMR-Behavior-Tree.git
+   git clone https://github.com/nirmalram07/dual-lidar-fusion.git
 
 2. **Build the Packages:**
    
