@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 using ScanMsg = sensor_msgs::msg::LaserScan;
 using ScanPtr = ScanMsg::SharedPtr;
@@ -20,8 +21,7 @@ private:
 
     void frontScanCallback(const ScanPtr msg);
     void backScanCallback(const ScanPtr msg);
-    void ScanTf();
-    bool is_value_overlapping(double theta);
+    void CombinedScan();
 
     geometry_msgs::msg::TransformStamped tf_msg_;
     ScanMsg::SharedPtr scan1, scan2;

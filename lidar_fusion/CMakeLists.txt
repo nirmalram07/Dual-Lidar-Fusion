@@ -26,6 +26,10 @@ install(DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
 )
 
+install(DIRECTORY launch/ params/
+  DESTINATION share/${PROJECT_NAME}
+)
+
 ament_export_dependencies(rclcpp sensor_msgs tf2 tf2_ros geometry_msgs)
 
 ament_package()

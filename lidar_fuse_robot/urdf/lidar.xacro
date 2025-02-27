@@ -10,8 +10,8 @@
                     <scan>
                         <horizontal>
                             <samples>360</samples>
-                            <min_angle>4.64</min_angle>
-                            <max_angle>8.74</max_angle>
+                            <min_angle>-1.60</min_angle>
+                            <max_angle>2.45</max_angle>
                         </horizontal>
                     </scan>
                     <range>
@@ -38,8 +38,8 @@
                     <scan>
                         <horizontal>
                             <samples>360</samples>
-                            <min_angle>1.51</min_angle>
-                            <max_angle>5.59</max_angle>
+                            <min_angle>-1.60</min_angle>
+                            <max_angle>2.45</max_angle>
                         </horizontal>
                     </scan>
                     <range>
