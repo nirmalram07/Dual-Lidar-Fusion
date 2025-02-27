@@ -1,0 +1,7 @@
+combined_scan:
+  ros__parameters:
+    front_offset_x: 0.25
+    front_offset_y: 0.15
+    back_offset_x: -0.25
+    back_offset_y: -0.15
+    
