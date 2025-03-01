@@ -6,19 +6,17 @@ This project demonstrates a dual lidar fusion system on a mobile robot. The robo
 - Creates a dummy TF frame at the center of the robot.
 - Publishes a combined laser scan relative to that dummy TF frame.
 
-Future plans include integrating this system with the ROS2 navigation stack for autonomous operation.
+Future plans include testing the combined laser scan with SLAM and the Navigation stack for autonomous navigation. Additionally, I plan to transition the project to Gazebo Ignition, as Gazebo Classic has reached its end-of-life.
 
 ## Features
 - **Dual Lidar Integration:** Combines data from two lidars mounted at different positions on the robot.
 - **Custom URDF:** Defines the robot model with both lidar sensors.
 - **Combined Laser Scan Publisher:** A ROS2 node subscribes to both lidar topics and publishes a fused laser scan.
-- **Development Branch:** The latest code is in the `development` branch, where active development is ongoing.
-- **Known Issues:**
-  - Mismatch between individual lidar scan data and the combined scan.
-  - Flickering in the intersection area of the two lidar scans.
+- **Development Branch:** The stable, tested code is in the main branch. The latest changes are pushed to the development branch, and after successful testing, they are merged into main.
 
 ## Requirements
-- **ROS2:** A supported ROS2 distribution (e.g., Foxy, Galactic, Humble) must be installed and configured.
+- **This project has been developed for ROS2 Humble**
+- **Gazebo Simulator:** I have used Gazebo Classic for this project.
 - **C++:** C++17 or later.
 - **Additional Dependencies:** Please refer to the package's xml files for any additional libraries or tools required.
 
