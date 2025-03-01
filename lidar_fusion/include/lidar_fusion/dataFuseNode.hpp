@@ -25,19 +25,17 @@ private:
 
     geometry_msgs::msg::TransformStamped tf_msg_;
     ScanMsg::SharedPtr scan1, scan2;
-
-    float scanIncrement_1, scanMin_1, scanMax_1, scanTime_1;
-    float scanIncrement_2, scanMin_2, scanMax_2, scanTime_2;
-
-    std::vector<float> scanRanges_1, scanRanges_2;
+    ScanMsg ScanData;
 
     rclcpp::Subscription<ScanMsg>::SharedPtr scanFront, scanBack;
     rclcpp::Publisher<ScanMsg>::SharedPtr scanCombined;
-
-    rclcpp::TimerBase::SharedPtr timer_;
     std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcast_;
+    rclcpp::TimerBase::SharedPtr timer_;
 
-    double front_offset_x_, front_offset_y_, front_min_angle_, front_max_angle_;
-    double back_offset_x_, back_offset_y_, back_min_angle_, back_max_angle_;
+    double front_offset_x_, front_offset_y_;
+    double back_offset_x_, back_offset_y_;
+
+    double x_sensor_front, y_sensor_front, x_centre_front, y_centre_front, computed_range_front, theta_c1, theta_front, range_front;
+    double x_sensor_back, y_sensor_back, x_centre_back, y_centre_back, computed_range_back, theta_c2, theta_back, range_back;
 
 };
