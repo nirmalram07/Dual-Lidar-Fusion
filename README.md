@@ -48,7 +48,7 @@ Future plans include testing the combined laser scan with SLAM and the Navigatio
    
       ```bash
       source install/setup.bash
-      ros2 run lidar_fusion combined_scan
+      ros2 launch lidar_fusion combined_scan.launch.py
       ```
 
 ## Suggestions & Feedbacks
