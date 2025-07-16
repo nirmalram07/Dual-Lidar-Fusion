@@ -2,6 +2,11 @@
 
 using std::placeholders::_1;
 
+/**
+ * @details 
+ * Initializes the node, sets up subscriptions to front and back LIDAR scans,
+ * creates a publisher for the combined scan, and starts a timer for transform broadcasting.
+ */
 DataFuse::DataFuse() : Node("combinedScan"){
 
     // Front and Back lidar distance from centre
@@ -43,13 +48,17 @@ void DataFuse::backScanCallback(const ScanPtr msg){
     scan2_ = msg;
 }
 
+/**
+ * @details
+ * Broadcasts a transform from the base_link to the combined_scan frame using TF2.
+ * Calls combinedScanPub() to publish the combined scan data.
+ */
 void DataFuse::combinedTfPub(){
 
     if (!scan1_ || !scan2_) {
         RCLCPP_WARN_ONCE(this->get_logger(), "Waiting for scan messages...");
         return;
     }
-
     tf_msg_.header.frame_id = "base_link";
     tf_msg_.header.stamp = this->now();
     tf_msg_.child_frame_id = "combined_scan";
@@ -63,17 +72,20 @@ void DataFuse::combinedTfPub(){
 
     tf_broadcast_->sendTransform(tf_msg_);
     RCLCPP_INFO_ONCE(this->get_logger(),"Publishing combined scan tf");
-
     combinedScanPub();
 }
 
+/**
+ * @details
+ * Combines scan data from both LIDARs into a single sensor_msgs::msg::LaserScan message,
+ * accounting for their offsets and publishing the result.
+ */
 void DataFuse::combinedScanPub(){
 
     ScanData = ScanMsg();
 
     ScanData.header.frame_id = "combined_scan";
     ScanData.header.stamp = this->now();
-
     ScanData.range_max = 12;
     ScanData.range_min = 0.1;
     ScanData.scan_time = 0.01;
@@ -101,12 +113,10 @@ void DataFuse::combinedScanPub(){
         front_.theta_c1_ = atan2(front_.combined_y_, front_.combined_x_);
 
         if (front_.theta_c1_ < 0) front_.theta_c1_ += 2 * M_PI;
-
         int j = static_cast<int>(floor(front_.theta_c1_ / ScanData.angle_increment));
 
         if (j >= 0 && j < num_beams && front_.computed_dist_ != INFINITY) {
             ScanData.ranges[j] = std::min(ScanData.ranges[j], static_cast<float>(front_.computed_dist_));
-            
             if (i < scan1_->intensities.size()) {
                 ScanData.intensities[j] = scan1_->intensities[i];
             }
@@ -129,12 +139,10 @@ void DataFuse::combinedScanPub(){
         back_.theta_c1_ = atan2(back_.combined_y_, back_.combined_x_);
 
         if(back_.theta_c1_ < 0) back_.theta_c1_ += 2*M_PI;
-
         int p = static_cast<int>(floor(back_.theta_c1_ / ScanData.angle_increment));
 
         if (p >= 0 && p < num_beams && back_.computed_dist_ != INFINITY) {
             ScanData.ranges[p] = std::min(ScanData.ranges[p], static_cast<float>(back_.computed_dist_));
-
             if (i < scan2_->intensities.size()) {
                 ScanData.intensities[p] = scan2_->intensities[i];
             }
