@@ -20,10 +20,10 @@ DataFuse::DataFuse() : Node("combinedScan"){
     tf_broadcast_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
 
     //Subsribing to both the lidar's scan data
-    scanFront = this->create_subscription<ScanMsg>("scan1_", 10,
+    scanFront = this->create_subscription<ScanMsg>("scan2", 10,
                 std::bind(&DataFuse::frontScanCallback, this, _1));
 
-    scanBack = this->create_subscription<ScanMsg>("scan2_", 10,
+    scanBack = this->create_subscription<ScanMsg>("scan2", 10,
                 std::bind(&DataFuse::backScanCallback, this, _1));
 
     //Initializing the publisher for combined scan data
@@ -86,46 +86,49 @@ void DataFuse::combinedScanPub(){
 
     for (size_t i = 0; i < scan1_->ranges.size(); ++i) {
 
-        theta_front = scan1_->angle_min + i * scan1_->angle_increment;
-        range_front = scan1_->ranges[i];
+        auto& frontpose_ = lidar_pose_.front_lidar_;
+        auto& front_ = laser_geometry_.front_lidar_;
 
-        x_sensor_front = range_front * cos(theta_front);
-        y_sensor_front = range_front * sin(theta_front);
-        x_centre_front = lidar_pose_.front_lidar_.offset_x_ + x_sensor_front;
-        y_centre_front = lidar_pose_.front_lidar_.offset_y_ + y_sensor_front;
+        front_.sensor_angle_ = scan1_->angle_min + i * scan1_->angle_increment;
+        front_.sensor_dist_ = scan1_->ranges[i];
 
-        computed_range_front = sqrt(x_centre_front * x_centre_front + y_centre_front * y_centre_front);
-        theta_c1 = atan2(y_centre_front, x_centre_front);
+        front_.sensor_x_ = front_.sensor_dist_ * cos(front_.sensor_angle_);
+        front_.sensor_y_ = front_.sensor_dist_ * sin(front_.sensor_angle_);
+        front_.combined_x_ = frontpose_.offset_x_ + front_.sensor_x_;
+        front_.combined_y_ = frontpose_.offset_y_ + front_.sensor_y_;
+        front_.computed_dist_ = sqrt(front_.combined_x_ * front_.combined_x_ + front_.combined_y_ * front_.combined_y_);
+        front_.theta_c1_ = atan2(front_.combined_y_, front_.combined_x_);
 
-        if (theta_c1 < 0) theta_c1 += 2 * M_PI;
+        if (front_.theta_c1_ < 0) front_.theta_c1_ += 2 * M_PI;
 
-        int j = static_cast<int>(floor(theta_c1 / ScanData.angle_increment));
+        int j = static_cast<int>(floor(front_.theta_c1_ / ScanData.angle_increment));
 
-        if (j >= 0 && j < num_beams && computed_range_front != INFINITY) {
-            ScanData.ranges[j] = std::min(ScanData.ranges[j], static_cast<float>(computed_range_front));
+        if (j >= 0 && j < num_beams && front_.computed_dist_ != INFINITY) {
+            ScanData.ranges[j] = std::min(ScanData.ranges[j], static_cast<float>(front_.computed_dist_));
         }
     }
 
     for(size_t i = 0; i<scan2_->ranges.size(); i++){
 
-        theta_back = scan2_->angle_min + i * scan2_->angle_increment;
-        range_back = scan2_->ranges[i];
+        auto& backpose_ = lidar_pose_.back_lidar_;
+        auto& back_ = laser_geometry_.back_lidar_;
 
-        x_sensor_back = range_back * cos(theta_back);
-        y_sensor_back = range_back * sin(theta_back);
+        back_.sensor_angle_ = scan2_->angle_min + i * scan2_->angle_increment;
+        back_.sensor_dist_ = scan2_->ranges[i];
 
-        x_centre_back = lidar_pose_.back_lidar_.offset_x_ - x_sensor_back;
-        y_centre_back = lidar_pose_.back_lidar_.offset_y_ - y_sensor_back;
+        back_.sensor_x_ = back_.sensor_dist_ * cos(back_.sensor_angle_);
+        back_.sensor_y_ = back_.sensor_dist_ * sin(back_.sensor_angle_);
+        back_.combined_x_ = backpose_.offset_x_ - back_.sensor_x_;
+        back_.combined_y_ = backpose_.offset_y_ - back_.sensor_y_;
+        back_.computed_dist_ = sqrt(back_.combined_x_ * back_.combined_x_ + back_.combined_y_ * back_.combined_y_);
+        back_.theta_c1_ = atan2(back_.combined_y_, back_.combined_x_);
 
-        computed_range_back = sqrt(x_centre_back*x_centre_back + y_centre_back*y_centre_back);
-        theta_c2 = atan2(y_centre_back, x_centre_back);
+        if(back_.theta_c1_ < 0) back_.theta_c1_ += 2*M_PI;
 
-        if(theta_c2 < 0) theta_c2 += 2*M_PI;
+        int p = static_cast<int>(floor(back_.theta_c1_ / ScanData.angle_increment));
 
-        int p = static_cast<int>(floor(theta_c2 / ScanData.angle_increment));
-
-        if (p >= 0 && p < num_beams && computed_range_back != INFINITY) {
-            ScanData.ranges[p] = std::min(ScanData.ranges[p], static_cast<float>(computed_range_back));
+        if (p >= 0 && p < num_beams && back_.computed_dist_ != INFINITY) {
+            ScanData.ranges[p] = std::min(ScanData.ranges[p], static_cast<float>(back_.computed_dist_));
         }
     }
 

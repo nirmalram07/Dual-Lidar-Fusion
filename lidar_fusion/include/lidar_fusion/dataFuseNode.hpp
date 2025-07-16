@@ -22,7 +22,24 @@ struct LidarPositions{
     LidarOffsets back_lidar_;
 };
 
+struct LidarMetrics{
+    float sensor_angle_;
+    float sensor_dist_;
+    float sensor_x_;
+    float sensor_y_;
+    float combined_x_;
+    float combined_y_;
+    float computed_dist_;
+    float theta_c1_;
+};
+
+struct LidarInfo{
+    LidarMetrics front_lidar_;
+    LidarMetrics back_lidar_;
+};
+
 class DataFuse : public rclcpp::Node{
+
 public:
     DataFuse();
 
@@ -43,11 +60,5 @@ private:
     rclcpp::TimerBase::SharedPtr timer_;
 
     LidarPositions lidar_pose_;
-
-    //double front_offset_x_, front_offset_y_;
-    //double back_offset_x_, back_offset_y_;
-
-    double x_sensor_front, y_sensor_front, x_centre_front, y_centre_front, computed_range_front, theta_c1, theta_front, range_front;
-    double x_sensor_back, y_sensor_back, x_centre_back, y_centre_back, computed_range_back, theta_c2, theta_back, range_back;
-
+    LidarInfo laser_geometry_;
 };
