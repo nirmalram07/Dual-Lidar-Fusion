@@ -4,4 +4,6 @@ combinedScan:
     front_offset_y: 0.15
     back_offset_x: -0.25
     back_offset_y: -0.15
-    
+    scan1_topic: "scan1"
+    scan2_topic: "scan2"
+    combinedscan_topic: "scan67"

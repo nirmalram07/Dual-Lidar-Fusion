@@ -83,6 +83,7 @@ void DataFuse::combinedScanPub(){
 
     int num_beams = static_cast<int>(std::ceil((ScanData.angle_max - ScanData.angle_min) / scan1_->angle_increment));
     ScanData.ranges.resize(num_beams, INFINITY);
+    ScanData.intensities.resize(num_beams, 0.0f);
 
     for (size_t i = 0; i < scan1_->ranges.size(); ++i) {
 
@@ -105,6 +106,10 @@ void DataFuse::combinedScanPub(){
 
         if (j >= 0 && j < num_beams && front_.computed_dist_ != INFINITY) {
             ScanData.ranges[j] = std::min(ScanData.ranges[j], static_cast<float>(front_.computed_dist_));
+            
+            if (i < scan1_->intensities.size()) {
+                ScanData.intensities[j] = scan1_->intensities[i];
+            }
         }
     }
 
@@ -129,6 +134,10 @@ void DataFuse::combinedScanPub(){
 
         if (p >= 0 && p < num_beams && back_.computed_dist_ != INFINITY) {
             ScanData.ranges[p] = std::min(ScanData.ranges[p], static_cast<float>(back_.computed_dist_));
+
+            if (i < scan2_->intensities.size()) {
+                ScanData.intensities[p] = scan2_->intensities[i];
+            }
         }
     }
 

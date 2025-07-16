@@ -7,7 +7,7 @@ def generate_launch_description():
 
     package_dir = get_package_share_directory("lidar_fusion")
 
-    lidar_pose = os.path.join(package_dir, "lidar_position.yaml")
+    lidar_pose = os.path.join(package_dir, "combinedscan_params.yaml")
 
     combined_scan_node = Node(
         package="lidar_fusion",
